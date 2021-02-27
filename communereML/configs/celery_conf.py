@@ -1,0 +1,11 @@
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_BROKER_URL = 'amqp://guest:guest@localhost'
+CELERY_TASK_SERIALIZER = 'pickle'
+CELERY_RESULT_SERIALIZER = 'pickle'
+CELERY_ACCEPT_CONTENT = ['pickle']
+CELERY_TIMEZONE = 'Asia/Tehran' #Europe/London
+CELERY_ENABLE_UTC = True
+CELERY_IGNORE_RESULT = True
+CELERY_WORKER_MAX_MEMORY_PER_CHILD = 200000
+CELERY_RESULT_EXPIRES = 3600 # the result will be expired after 3600 seconds, if we want to save model, we must save the file
+CELERY_SEND_EVENTS = False

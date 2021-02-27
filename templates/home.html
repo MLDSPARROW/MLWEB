@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div>
+        <ul>
+            <li>
+            <a class="btn btn-warning" href="{% url 'model_form_upload' %}">Upload dataset</a>
+            </li>
+        </ul>
+    </div>
+
+    <div>
+        <h5>Uploaded Datasets:</h5>
+        <table class="table text-center">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">DATASET_ID</th>
+                    <th scope="col">UPLOADED_DATE</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for obj in datasets %}
+                <tr onclick="select_dataset_id({{obj.id}})">
+                    <th scope="row" >{{obj.id}}</th>
+                    <td>{{ obj.uploaded_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <h5>ALGORITHM LIST</h5>
+        <table class="table text-center">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">NUM</th>
+                    <th scope="col">ALGORITHM</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr onclick="select_algorithm_name('Logistic Regression')">
+                    <th scope="row" >1</th>
+                    <td>Logistic Regression</td>
+                </tr>
+                <tr onclick="select_algorithm_name('Logistic Regression CV')">
+                    <th scope="row" >2</th>
+                    <td>Logistic Regression CV</td>
+                </tr>
+                <tr onclick="select_algorithm_name('Bagging')">
+                    <th scope="row" >3</th>
+                    <td>Bagging</td>
+                </tr>
+                <tr onclick="select_algorithm_name('Support Vector Machine')">
+                    <th scope="row" >4</th>
+                    <td>Support Vector Machine</td>
+                </tr>
+                <tr onclick="select_algorithm_name('Random Forest')">
+                    <th scope="row" >5</th>
+                    <td>Random Forest</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <h5>Trained Models:</h5>
+        <table class="table text-center">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">MODEL_ID</th>
+                    <th scope="col">DATASET_ID</th>
+                    <th scope="col">MODEL_NAME</th>
+                    <th scope="col">PARAMETERS</th>
+                    <th scope="col">VALUES</th>
+                </tr>
+            </thead>
+            <tbody id="trained_model_tbl">
+                {% for obj in models %}
+                <tr onclick="select_model_id({{obj.id}})">
+                    <th scope="row" >{{ obj.id }}</th>
+                    <td>{{obj.model_dataset.id}}</td>
+                    <td>{{ obj.model_name }}</td>
+                    <td>{{obj.model_parameters}}</td>
+                    <td>{{obj.model_param_values}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="selected_ml">
+        <label for="dataset">dataset_id</label>
+        <input type="text" id="dataset_id" name="dataset">
+        <label for="ml_model">ml_algorithm_name</label>
+        <input type="text" id="ml_model_name" name="ml_model">
+        <button id="train_btn" class="btn btn-secondary">
+            TRAIN
+        </button>
+    </div>
+
+    <div id="predict_data">
+        <label for="model_id">model_id</label>
+        <input type="text" id="model_id" name="model_id">
+        <label for="test_data">input_test_data</label>
+        <input type="text" id="input_test_data" name="test_data">
+        <button id="predict_btn" class="btn btn-success">
+            predict_btn
+        </button>
+    </div>
+
+    <div id="prediction_result">
+        {% if predicted_result %}
+        <ul>
+            The Estimated Class is: {{predicted_result}}
+        </ul>
+        {% endif %}
+    </div>
+
+  {% endblock %}
+

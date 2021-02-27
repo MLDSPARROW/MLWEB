@@ -1,0 +1,9 @@
+{% for obj in models %}
+    <tr onclick="select_model_id({{obj.id}})">
+        <th scope="row" >{{ obj.id }}</th>
+        <td>{{obj.model_dataset.id}}</td>
+        <td>{{ obj.model_name }}</td>
+        <td>{{obj.model_parameters}}</td>
+        <td>{{obj.model_param_values}}</td>
+    </tr>
+{% endfor %}
