@@ -3,6 +3,8 @@ from sklearn.svm import SVC
 from sklearn.ensemble import (
 BaggingClassifier,
 RandomForestClassifier,
+StackingClassifier,
+
 )
 
 
@@ -80,4 +82,26 @@ class TrainAlgorithm:
         y_train = self.y_train
         model = RandomForestClassifier(n_estimators=500,min_samples_split = 10,min_samples_leaf=5, ccp_alpha=0.02, max_features = 0.7)
         model = shared_train.delay(model, x_train,y_train)
+        return model.id
+
+    def stacking_algorithms(self):
+
+        x_train = self.x_train
+        y_train = self.y_train
+        
+        model_rnd_frst = RandomForestClassifier(n_estimators=500,min_samples_split = 10,min_samples_leaf=5, ccp_alpha=0.02, max_features = 0.7)
+        model_bagging = BaggingClassifier(max_features = 4, n_estimators = 500)
+        model_svm = SVC(kernel = 'poly', degree = 4, C = 1000)
+        model_log_reg = LogisticRegression(penalty='l2', C=2, solver='liblinear')
+        model_log_reg_cv = LogisticRegressionCV(penalty='l1', Cs=[1.5, 2, 3, 4, 5], solver='liblinear',scoring='roc_auc')
+        estimators = [
+            ('Logistic Regression',model_log_reg),
+            ('Random Forest',model_rnd_frst),
+            ('Bagging', model_bagging),
+            ('SVM', model_svm),
+        ]
+        
+        stacking_classifier = StackingClassifier(estimators = estimators, final_estimator = model_log_reg_cv)
+
+        model = shared_train.delay(stacking_classifier, x_train,y_train)
         return model.id

@@ -61,6 +61,8 @@ def create_train_model(request):
         model_async_id = train_obj.train_logistic_regression_cv()
     elif model_name == 'Random Forest':
         model_async_id = train_obj.train_random_forest()
+    elif model_name == 'Stacking Algorithms':
+        model_async_id = train_obj.stacking_algorithms()
     
     #create model
     mdl = MLModel.objects.create(
